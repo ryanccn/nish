@@ -1,10 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-exec_path="$(dirname "${BASH_SOURCE[0]}")"
+lib_path="$(dirname "$(dirname "${BASH_SOURCE[0]}")")/lib"
 
 # shellcheck disable=SC1091
-. "$exec_path/lib/package_manager.sh"
+. "$lib_path/package_manager.sh"
 
 if [ "$PACKAGE_MANAGER" = "pnpm" ]; then
   "$PACKAGE_MANAGER" update "$@"
