@@ -4,13 +4,13 @@ PACKAGE_MANAGER=""
 
 if [ -f "package.json" ]; then
     PACKAGE_MANAGER="$(jq -r '.packageManager | split("@") | .[0]' < package.json)"
-    exit 0
+    return
 fi
 
 [ -f "pnpm-lock.yaml" ] && PACKAGE_MANAGER="pnpm"
 [ -f "yarn.lock" ] && PACKAGE_MANAGER="yarn"
 [ -f "package-lock.json" ] && PACKAGE_MANAGER="npm"
-[ "$PACKAGE_MANAGER" != "" ] && exit 0
+[ "$PACKAGE_MANAGER" != "" ] && return
 
 if ! command -v gum &> /dev/null; then
     echo "Could not determine package manager"
