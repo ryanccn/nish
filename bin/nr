@@ -1,24 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
-lib_path="$(dirname "$(dirname "${BASH_SOURCE[0]}")")/lib"
+lib_path="$(readlink -fn "$0" | xargs dirname)/lib"
 
 # shellcheck disable=SC1091
 . "$lib_path/package_manager.sh"
 
 scripts=""
-if [ -f package.json ]; then
-  scripts="$(jq -r '.scripts | keys | join(" ")' < package.json)"
-fi
+[ -f package.json ] && scripts="$(jq -r '.scripts | keys | join(" ")' < package.json)"
 
 chosen_script=""
-if [ $# -eq 0 ]; then
-  # shellcheck disable=SC2086
-  chosen_script="$(gum choose $scripts)"
+[ $# -eq 0 ] && chosen_script="$(gum choose "$scripts")"
+
+if [ "$chosen_script" != "" ]; then
+    "$PACKAGE_MANAGER" run "$chosen_script"
+    exit 0
 fi
 
-if [ -n "$chosen_script" ]; then
-  "$PACKAGE_MANAGER" run "$chosen_script"
-else
-  "$PACKAGE_MANAGER" run "$@"
-fi
+"$PACKAGE_MANAGER" run "$@"
