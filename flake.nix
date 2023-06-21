@@ -39,7 +39,6 @@
       default = mkShell {
         packages = with pkgs; [
           beautysh
-          gum
           shellcheck
         ];
       };
@@ -66,7 +65,7 @@
         };
 
         nativeBuildInputs = [prev.makeWrapper];
-        buildInputs = [prev.gum];
+        buildInputs = [prev.gum prev.jq];
 
         installPhase = ''
           mkdir -p $out/bin/lib
