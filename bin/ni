@@ -1,17 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
-lib_path="$(dirname "$(dirname "${BASH_SOURCE[0]}")")/lib"
+lib_path="$(readlink -fn "$0" | xargs dirname)/lib"
 
 # shellcheck disable=SC1091
-. "$lib_path/package_manager.sh"
+source "$lib_path/package_manager.sh"
 
 if [ $# -lt 1 ]; then
-  $PACKAGE_MANAGER install
-else
-  if [ "$PACKAGE_MANAGER" = "npm" ]; then
-    "$PACKAGE_MANAGER" install "$1"
-  else
-    "$PACKAGE_MANAGER" add "$1"
-  fi
+    "$PACKAGE_MANAGER" install
+    exit 0
 fi
+
+if [ "$PACKAGE_MANAGER" = "npm" ]; then
+    "$PACKAGE_MANAGER" install "$1"
+    exit 0
+fi
+
+"$PACKAGE_MANAGER" add "$1"
