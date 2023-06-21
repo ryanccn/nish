@@ -9,6 +9,6 @@
 - [ ] `nr` (without arguments)
 - [x] `nlx`
 - [x] `nu`
-- [ ] `nun`
+- [x] `nun`
 - [ ] `nci`
 - [ ] `na`
