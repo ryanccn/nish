@@ -4,3 +4,7 @@
 # ide
 .vscode/
 .idea/
+
+# nix
+result
+.direnv
