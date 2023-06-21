@@ -54,7 +54,7 @@
 
     overlays.default = _: prev: let
       inherit (prev) stdenv;
-      inherit (prev.lib) licenses maintainers platforms;
+      inherit (prev.lib) licenses maintainers makeBinPath platforms;
     in {
       nish = stdenv.mkDerivation rec {
         pname = "nish";
@@ -65,12 +65,18 @@
           path = ./.;
         };
 
-        buildInputs = with prev; [gum];
+        nativeBuildInputs = [prev.makeWrapper];
+        buildInputs = [prev.gum];
 
         installPhase = ''
           mkdir -p $out/bin/lib
           install -Dm755 n{i,r} $out/bin
           install -Dm755 lib/package_manager.sh $out/bin/lib
+
+          for bin in $out/bin/{n{i,r},lib/package_manager.sh}; do
+          	wrapProgram "$bin" \
+          		--prefix PATH : ${makeBinPath buildInputs}
+          done
         '';
 
         meta = {
