@@ -76,7 +76,7 @@
 
           install -Dm755 lib/package_manager.sh $out/bin/lib
 
-          for bin in $out/bin/{bin/*,lib/package_manager.sh}; do
+          for bin in $(find $out/bin -type f); do
           	wrapProgram "$bin" \
           		--prefix PATH : ${makeBinPath buildInputs}
           done
