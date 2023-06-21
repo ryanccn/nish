@@ -70,10 +70,14 @@
 
         installPhase = ''
           mkdir -p $out/bin/lib
-          install -Dm755 n{i,r} $out/bin
+
+          for bin in bin/*; do
+            install -Dm755 "$bin" $out/bin
+          done
+
           install -Dm755 lib/package_manager.sh $out/bin/lib
 
-          for bin in $out/bin/{n{i,r},lib/package_manager.sh}; do
+          for bin in $out/bin/{bin/*,lib/package_manager.sh}; do
           	wrapProgram "$bin" \
           		--prefix PATH : ${makeBinPath buildInputs}
           done
