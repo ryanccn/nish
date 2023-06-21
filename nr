@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+
+exec_path="$(dirname "${BASH_SOURCE[0]}")"
+
+# shellcheck disable=SC1091
+. "$exec_path/lib/package_manager.sh"
+
+"$PACKAGE_MANAGER" run "$1"
