@@ -5,8 +5,9 @@
 ## roadmap
 
 - [x] `ni`
+- [x] `ni` (without arguments)
 - [x] `nr`
-- [ ] `nr` (without arguments)
+- [x] `nr` (without arguments)
 - [x] `nlx`
 - [x] `nu`
 - [x] `nun`

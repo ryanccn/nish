@@ -6,4 +6,19 @@ lib_path="$(dirname "$(dirname "${BASH_SOURCE[0]}")")/lib"
 # shellcheck disable=SC1091
 . "$lib_path/package_manager.sh"
 
-"$PACKAGE_MANAGER" run "$@"
+scripts=""
+if [ -f package.json ]; then
+  scripts="$(jq -r '.scripts | keys | join(" ")' < package.json)"
+fi
+
+chosen_script=""
+if [ $# -eq 0 ]; then
+  # shellcheck disable=SC2086
+  chosen_script="$(gum choose $scripts)"
+fi
+
+if [ -n "$chosen_script" ]; then
+  "$PACKAGE_MANAGER" run "$chosen_script"
+else
+  "$PACKAGE_MANAGER" run "$@"
+fi
