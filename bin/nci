@@ -1,13 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
-lib_path="$(dirname "$(dirname "${BASH_SOURCE[0]}")")/lib"
+lib_path="$(readlink -fn "$0" | xargs dirname)/lib"
 
 # shellcheck disable=SC1091
 . "$lib_path/package_manager.sh"
 
 if [ "$PACKAGE_MANAGER" = "npm" ]; then
-  "$PACKAGE_MANAGER" ci "$@"
-else
-  "$PACKAGE_MANAGER" install --frozen-lockfile "$@"
+    "$PACKAGE_MANAGER" ci "$@"
+    exit 0
 fi
+
+"$PACKAGE_MANAGER" install --frozen-lockfile "$@"
