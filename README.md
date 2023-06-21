@@ -7,7 +7,7 @@
 - [x] `ni`
 - [x] `nr`
 - [ ] `nr` (without arguments)
-- [ ] `nlx`
+- [x] `nlx`
 - [ ] `nu`
 - [ ] `nun`
 - [ ] `nci`

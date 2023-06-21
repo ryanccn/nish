@@ -1,0 +1,13 @@
+#!/bin/bash
+set -euo pipefail
+
+exec_path="$(dirname "${BASH_SOURCE[0]}")"
+
+# shellcheck disable=SC1091
+. "$exec_path/lib/package_manager.sh"
+
+if [ "$PACKAGE_MANAGER" = "npm" ]; then
+  npx "$1"
+else
+  "$PACKAGE_MANAGER" dlx "$1"
+fi
