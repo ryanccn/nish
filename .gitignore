@@ -8,3 +8,6 @@
 # nix
 result
 .direnv
+
+# testing
+test/
