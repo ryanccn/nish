@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-lib_path="$(readlink -fn "$0" | xargs dirname | xargs dirname)/lib"
+lib_path="$(readlink -fn "$0" | xargs dirname)"/../lib
 
 # shellcheck disable=SC1091
 . "$lib_path/package_manager.sh"
