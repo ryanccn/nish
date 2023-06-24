@@ -68,18 +68,26 @@
         buildInputs = [prev.gum prev.jq];
 
         installPhase = ''
-          mkdir -p $out/bin/lib
+          runHook preInstall
+
+          mkdir -p $out/{bin,lib}
 
           for bin in bin/*; do
             install -Dm755 "$bin" $out/bin
           done
 
-          install -Dm755 lib/package_manager.sh $out/bin/lib
+          install -Dm755 lib/package_manager.sh $out/lib
 
-          for bin in $(find $out/bin -type f); do
+          for bin in $(find $out/bin $out/lib -type f); do
           	wrapProgram "$bin" \
           		--prefix PATH : ${makeBinPath buildInputs}
           done
+
+          # dumb hack so script is sourced instead of exec'd
+          sed -i '$d' $out/lib/package_manager.sh
+          echo "source $out/lib/.package_manager.sh-wrapped" >> $out/lib/package_manager.sh
+
+          runHook postInstall
         '';
 
         meta = {
