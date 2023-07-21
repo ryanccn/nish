@@ -7,10 +7,11 @@ lib_path="$(readlink -fn "$0" | xargs dirname)"/../lib
 . "$lib_path/package_manager.sh"
 
 scripts=""
-[ -f package.json ] && scripts="$(jq -r '.scripts | keys | join(" ")' < package.json)"
+[ -f package.json ] && scripts="$(jq -r '.scripts | keys | join("\n")' < package.json)"
 
 chosen_script=""
-[ $# -eq 0 ] && chosen_script="$(gum choose "$scripts")"
+# shellcheck disable=SC2086
+[ $# -eq 0 ] && chosen_script="$(gum choose $scripts)"
 
 if [ "$chosen_script" != "" ]; then
     "$PACKAGE_MANAGER" run "$chosen_script"
