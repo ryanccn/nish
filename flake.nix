@@ -52,17 +52,13 @@
     });
 
     overlays.default = _: prev: let
-      inherit (prev) stdenv;
-      inherit (prev.lib) licenses maintainers makeBinPath platforms;
+      inherit (prev) stdenv lib;
     in {
       nish = stdenv.mkDerivation rec {
         pname = "nish";
         inherit version;
 
-        src = builtins.path {
-          name = "${pname}-src";
-          path = ./.;
-        };
+        src = ./.;
 
         nativeBuildInputs = [prev.makeWrapper];
         buildInputs = [prev.gum prev.jq];
@@ -80,7 +76,7 @@
 
           for bin in $(find $out/bin $out/lib -type f); do
           	wrapProgram "$bin" \
-          		--prefix PATH : ${makeBinPath buildInputs}
+          		--prefix PATH : ${lib.makeBinPath buildInputs}
           done
 
           # dumb hack so script is sourced instead of exec'd
@@ -93,9 +89,9 @@
         meta = {
           description = "ni, implemented in bash";
           homepage = "https://github.com/ryanccn/nish";
-          license = licenses.mit;
-          maintainers = [maintainers.getchoo];
-          platforms = with platforms; linux ++ darwin;
+          license = lib.licenses.mit;
+          maintainers = with lib.maintainers; [ryanccn getchoo];
+          platforms = with lib.platforms; linux ++ darwin;
         };
       };
     };

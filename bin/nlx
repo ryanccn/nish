@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -eo pipefail
 
 lib_path="$(readlink -fn "$0" | xargs dirname)"/../lib
 
@@ -7,7 +7,9 @@ lib_path="$(readlink -fn "$0" | xargs dirname)"/../lib
 . "$lib_path/package_manager.sh"
 
 if [ "$PACKAGE_MANAGER" = "npm" ]; then
-    npx "$@"
+    $NISH_DRY_RUN npx "$@"
+elif [ "$PACKAGE_MANAGER" = "bun" ]; then
+    $NISH_DRY_RUN bun x "$@"
 else
-    "$PACKAGE_MANAGER" dlx "$@"
+    $NISH_DRY_RUN "$PACKAGE_MANAGER" dlx "$@"
 fi

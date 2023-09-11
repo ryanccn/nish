@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 lib_path="$(readlink -fn "$0" | xargs dirname)"/../lib
 
@@ -7,13 +7,9 @@ lib_path="$(readlink -fn "$0" | xargs dirname)"/../lib
 . "$lib_path/package_manager.sh"
 
 if [ $# -lt 1 ]; then
-    "$PACKAGE_MANAGER" install
-    exit 0
+    $NISH_DRY_RUN "$PACKAGE_MANAGER" install
+elif [ "$PACKAGE_MANAGER" = "npm" ]; then
+    $NISH_DRY_RUN "$PACKAGE_MANAGER" install "$@"
+else
+    $NISH_DRY_RUN "$PACKAGE_MANAGER" add "$@"
 fi
-
-if [ "$PACKAGE_MANAGER" = "npm" ]; then
-    "$PACKAGE_MANAGER" install "$1"
-    exit 0
-fi
-
-"$PACKAGE_MANAGER" add "$1"

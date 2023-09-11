@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 lib_path="$(readlink -fn "$0" | xargs dirname)"/../lib
 
@@ -14,8 +14,8 @@ chosen_script=""
 [ $# -eq 0 ] && chosen_script="$(gum choose $scripts)"
 
 if [ "$chosen_script" != "" ]; then
-    "$PACKAGE_MANAGER" run "$chosen_script"
+    $NISH_DRY_RUN "$PACKAGE_MANAGER" run "$chosen_script"
     exit 0
 fi
 
-"$PACKAGE_MANAGER" run "$@"
+$NISH_DRY_RUN "$PACKAGE_MANAGER" run "$@"

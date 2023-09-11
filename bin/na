@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 lib_path="$(readlink -fn "$0" | xargs dirname)"/../lib
 
 # shellcheck disable=SC1091
 . "$lib_path/package_manager.sh"
 
-exec "$PACKAGE_MANAGER" "$@"
+$NISH_DRY_RUN "$PACKAGE_MANAGER" "$@"

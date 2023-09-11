@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 lib_path="$(readlink -fn "$0" | xargs dirname)"/../lib
 
 # shellcheck disable=SC1091
 . "$lib_path/package_manager.sh"
 
-if [ "$PACKAGE_MANAGER" = "pnpm" ]; then
-    "$PACKAGE_MANAGER" update "$@"
+if [ "$PACKAGE_MANAGER" = "pnpm" ] || [ "$PACKAGE_MANAGER" = "bun" ]; then
+    $NISH_DRY_RUN "$PACKAGE_MANAGER" update "$@"
     exit 0
 fi
 
-"$PACKAGE_MANAGER" upgrade "$@"
+$NISH_DRY_RUN "$PACKAGE_MANAGER" upgrade "$@"

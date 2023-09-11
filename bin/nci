@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 lib_path="$(readlink -fn "$0" | xargs dirname)"/../lib
 
@@ -7,8 +7,7 @@ lib_path="$(readlink -fn "$0" | xargs dirname)"/../lib
 . "$lib_path/package_manager.sh"
 
 if [ "$PACKAGE_MANAGER" = "npm" ]; then
-    "$PACKAGE_MANAGER" ci "$@"
-    exit 0
+    $NISH_DRY_RUN "$PACKAGE_MANAGER" ci "$@"
+else
+    $NISH_DRY_RUN "$PACKAGE_MANAGER" install --frozen-lockfile "$@"
 fi
-
-"$PACKAGE_MANAGER" install --frozen-lockfile "$@"

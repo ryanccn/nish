@@ -8,7 +8,7 @@
 
 In order to install, simply add the `bin` folder to your `PATH`. `chmod +x` if you run into `permission denied` errors.
 
-You can also also install with Nix by using `nix profile install github:ryanccn/nish` :)
+You can also also install with Nix by using `nix profile install github:ryanccn/nish` or using the package from the flake!
 
 ## Roadmap
 
